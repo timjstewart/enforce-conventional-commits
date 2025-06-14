@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+exec 2>&1
+
+firstLine=$(cat "$1" | head -n 1)
+
+minDescriptionLen=5
+minScopeLen=3
+
+commitType=
+scope=
+description=
+
+startsWithType='^(feat|fix|chore|docs|style|refactor|perf|test)\W'
+
+if [[ ! "$firstLine" =~ $startsWithType ]]; then
+  echo "commit message must start with the change type (e.g. feat, chore, etc.)."
+  exit 1
+else
+  commitType="${BASH_REMATCH[1]}"
+fi
+
+hasColon='^[a-z]*(\(.*\))?:'
+
+if [[ ! $firstLine =~ $hasColon ]]; then
+  echo "commit message must have a colon (:) after the optional scope."
+  exit 1
+fi
+
+hasScope='^[a-z]*\((.*)\):'
+
+if [[ $firstLine =~ $hasScope ]]; then
+  scope="$(echo ${BASH_REMATCH[1]})"
+
+  legalScope='^[a-z]*(\([a-zA-Z0-9]*\))?:'
+
+  if [[ ! $firstLine =~ $legalScope ]]; then
+    echo "commit message scopes can only contain letters, numbers, hyphens, and underscores."
+    exit 1
+  fi
+
+  if ((${#scope} < $minScopeLen)); then
+    echo "commit message scopes must be at least $minScopeLen characters long."
+    exit 1
+  fi
+fi
+
+hasDescription=':(..*)$'
+
+if [[ ! $firstLine =~ $hasDescription ]]; then
+  echo "commit message must have a description after the colon (:)."
+  exit 1
+else
+  description="$(echo ${BASH_REMATCH[1]})"
+fi
+
+if ((${#description} < minDescriptionLen)); then
+  echo "commit message must have a description at least $minDescriptionLen characters long."
+  exit 1
+fi
+
+exit 0
