@@ -16,4 +16,4 @@
 installGlobally.sh
 ```
 
-Every time you run `git init` the `commit-msg` hook script will be added to the new repository's git hooks (i.e. `.git/hooks`)
+From now on, every time you run `git init` the `commit-msg` hook script will be added to the new repository's git hooks (i.e. `.git/hooks`)
