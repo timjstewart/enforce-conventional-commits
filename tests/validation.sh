@@ -10,8 +10,6 @@ runTest() {
   commitMessageFile=$(mktemp)
   outputFile=$(mktemp)
 
-  echo "$commitMessage" "$commitMessageFile" >2
-
   echo -n "RUN  $testName "
 
   "$scriptPath" "$commitMessageFile" >"$outputFile"
@@ -28,7 +26,6 @@ runTest() {
     echo "  Actual Exit Code:   $?"
     rm "$commitMessageFile" "$outputFile"
   fi
-
 }
 
 runTest 'no args' "" 1
