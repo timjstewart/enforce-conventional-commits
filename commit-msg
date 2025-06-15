@@ -11,7 +11,7 @@ commitType=
 scope=
 description=
 
-startsWithType='^(feat|fix|chore|docs|style|refactor|perf|test)\W'
+startsWithType='^(feat|fix|chore|docs|style|refactor|perf|test)[(:]'
 
 if [[ ! "$firstLine" =~ $startsWithType ]]; then
   echo "commit message must start with the change type (e.g. feat, chore, etc.)."
