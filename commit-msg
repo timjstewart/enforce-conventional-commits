@@ -2,6 +2,8 @@
 
 exec 2>&1
 
+# Read only the first line of the commit message file since
+# that's the only line being validated.
 firstLine=$(cat "$1" | head -n 1)
 
 minDescriptionLen=5
@@ -10,6 +12,9 @@ minScopeLen=3
 commitType=
 scope=
 description=
+
+# It only takes one regular expression to check for validity, but that
+# does not support giving detailed error messages.
 
 startsWithType='^(feat|fix|chore|docs|style|refactor|perf|test)[(:]'
 
